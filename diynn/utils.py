@@ -6,20 +6,12 @@ def relu(Z):
 
 
 def relu_prime(Z):
-    '''
-    Z - weighted input matrix
-
-    Returns gradient of Z where all
-    negative values are set to 0 and
-    all positive values set to 1
-    '''
     Z[Z < 0] = 0
     Z[Z > 0] = 1
     return Z
 
 
 def softmax(Z):
-    """Compute softmax values for each sets of scores in x."""
     exp = np.exp(Z - np.max(Z))
     return exp / exp.sum(axis=0)
 

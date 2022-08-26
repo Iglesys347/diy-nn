@@ -11,32 +11,24 @@ class DIYNN():
         # updated with the dataset (in `backward_prop` or `train` methods)
         self.m = None
 
-        self.W_h, self.W_o = self.init_weights()
-        self.b_h, self.b_o = self.init_bias(bias=bias)
+        self.W_h, self.W_o = self._init_weights()
+        self.b_h, self.b_o = self._init_bias(bias=bias)
 
         # H, Z_h and Z_o are initialized to None and updated in forward_prop
         self.H, self.Z_h, self.Z_o = None, None, None
 
-    def init_weights(self):
+    def _init_weights(self):
         # He initialisation of the weights ; there is probably a better init method
         W_h = np.random.randn(self.p, self.n) * np.sqrt(2.0/self.n)
         W_o = np.random.randn(self.q, self.p) * np.sqrt(2.0/self.p)
         return W_h, W_o
 
-    def init_bias(self, bias=0.1):
+    def _init_bias(self, bias=0.1):
         b_h = np.full((self.p, 1), bias)
         b_o = np.full((self.q, 1), bias)
         return b_h, b_o
 
-    def forward_prop(self, X):
-        '''
-        X    - input matrix
-        Zh   - hidden layer weighted input
-        Zo   - output layer weighted input
-        H    - hidden layer activation
-        y    - output layer
-        yHat - output layer predictions
-        '''
+    def _forward_prop(self, X):
         # Hidden layer
         self.Z_h = np.dot(self.W_h, X) + self.b_h
         self.H = relu(self.Z_h)
@@ -47,7 +39,7 @@ class DIYNN():
         y_hat = softmax(self.Z_o)
         return y_hat
 
-    def backward_prop(self, X, y, y_hat, learning_rate):
+    def _backward_prop(self, X, y, y_hat, learning_rate):
         self.m = X.shape[1]
         # y_hat has a shape of (m, q) while y has a shape of (m, 1)
         # to make y and y_hat match we need to one hot encode y
@@ -77,8 +69,8 @@ class DIYNN():
         self.init_weights()
         self.init_bias()
         for i in range(n_iter):
-            y_hat = self.forward_prop(X)
-            self.backward_prop(X, y, y_hat, learning_rate=learning_rate)
+            y_hat = self._forward_prop(X)
+            self._backward_prop(X, y, y_hat, learning_rate=learning_rate)
             if verbose and i % print_every == 0:
                 print_acc(i, accuracy(y, pred_to_label(y_hat)))
 
@@ -99,13 +91,13 @@ class DIYNN():
             for start in range(0, self.m, batch_size):
                 stop = start + batch_size
                 X_batch, y_batch = X_perm[:, start:stop], y_perm[start:stop]
-                y_hat = self.forward_prop(X_batch)
-                self.backward_prop(X_batch, y_batch, y_hat,
+                y_hat = self._forward_prop(X_batch)
+                self._backward_prop(X_batch, y_batch, y_hat,
                                    learning_rate=learning_rate)
 
             if verbose and i % print_every == 0:
-                y_hat = self.forward_prop(X)
+                y_hat = self._forward_prop(X)
                 print_acc(i, accuracy(y, pred_to_label(y_hat)))
 
     def predict(self, X):
-        return pred_to_label(self.forward_prop(X))
+        return pred_to_label(self._forward_prop(X))
