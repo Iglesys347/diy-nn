@@ -39,4 +39,4 @@ The maths behind this implementation are shortly explained in [docs/Partial-Math
 
 ## Examples
 
-Some examples of usage can be found in [`docs/examples/`](docs/examples/] folder.
+Some examples of usage can be found in [`docs/examples/`](docs/examples/) folder.
