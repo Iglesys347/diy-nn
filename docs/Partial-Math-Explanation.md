@@ -48,7 +48,7 @@ Summing up all the above, we reach the following formulation:
 
 $$\hat{y} = a_O(\underbrace{W_O \cdot \underbrace{a_H(\underbrace{W_H \cdot X + b_H)}_{Z_H \in \mathbb{{R}^{p \times m}}}}_{H \in \mathbb{R}^{p \times m}} + b_O}_{Z_O \in \mathbb{R}^{q \times m}})$$
 
-This is known as forward propagation and is implemented in `forward_prop` method in [`diy_nn.py`](diy_nn.py).
+This is known as forward propagation and is implemented in `forward_prop` method in [`diy_nn.py`](diynn/diy_nn.py).
 
 ## How does the NN learn ?
 
