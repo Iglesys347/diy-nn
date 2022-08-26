@@ -32,3 +32,11 @@ nn.train(X_train, y_train)
 Only `numpy` is required as specified in [requirements.txt](requirements.txt). 
 
 However if you want to run the examples from [`docs/examples/`](docs/examples/) folder, you will need to install other packages specified in [doc/examples/requirements.txt](docs/examples/requirements.txt).
+
+## Math explanation
+
+The maths behind this implementation are shortly explained in [docs/Partial-Math-Explanation.md](docs/Partial-Math-Explanation.md).
+
+## Examples
+
+Some examples of usage can be found in [`docs/examples/`](docs/examples/] folder.
