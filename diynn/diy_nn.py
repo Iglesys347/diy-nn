@@ -4,12 +4,15 @@ from diynn.utils import accuracy, one_hot_encode, pred_to_label, print_acc, relu
 
 
 class DIYNN():
-    def __init__(self, inp_layer_size, hidden_layer_size, output_layer_size, bias=0.1) -> None:
+    def __init__(self, inp_layer_size, hidden_layer_size, output_layer_size, bias=0.1, seed=None) -> None:
         self.n = inp_layer_size
         self.p = hidden_layer_size
         self.q = output_layer_size
         # updated with the dataset (in `backward_prop` or `train` methods)
         self.m = None
+        
+        # random number generator used for initialisation methods and to shuffle in train_minibatch
+        self.rng = np.random.default_rng(seed)
 
         self.W_h, self.W_o = self._init_weights()
         self.b_h, self.b_o = self._init_bias(bias=bias)
@@ -19,8 +22,8 @@ class DIYNN():
 
     def _init_weights(self):
         # He initialisation of the weights ; there is probably a better init method
-        W_h = np.random.randn(self.p, self.n) * np.sqrt(2.0/self.n)
-        W_o = np.random.randn(self.q, self.p) * np.sqrt(2.0/self.p)
+        W_h = self.rng.standard_normal((self.p, self.n)) * np.sqrt(2.0/self.n)
+        W_o = self.rng.standard_normal((self.q, self.p)) * np.sqrt(2.0/self.p)
         return W_h, W_o
 
     def _init_bias(self, bias=0.1):
@@ -86,7 +89,7 @@ class DIYNN():
 
         for i in range(n_iter):
             # shuffling the two arrays
-            perms = np.random.permutation(self.m)
+            perms = self.rng.permutation(self.m)
             X_perm, y_perm = X[:, perms], y[perms]
             for start in range(0, self.m, batch_size):
                 stop = start + batch_size
